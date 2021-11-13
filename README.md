@@ -1,5 +1,6 @@
-# its my owne CoolSnippetsCode
+# its my own CoolSnippetsCode
 
-> work on my git pusher in bash for submit my forgot repository
-> its finished now im testing.
-> rc6 not work!
+---------
+# Scripts
+- [gitShut](./gitShut.sh) -> this script help you to push all git project when you have rush in your company
+- [rpBash](./rpBash)  -> this script change your PS1 in bash
