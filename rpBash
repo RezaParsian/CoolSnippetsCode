@@ -1,0 +1,54 @@
+#	Installation :
+#		copy this file to home directory 'cp .rpBash ~/.rpBash' then import this file in .bashrc
+#
+
+# for set color \[\e[7;35m\]
+# for showing icons install fontawsome
+
+parse_git_branch() {
+     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+}
+
+generate_emoji(){
+    array=("🤦" "😂" "😕" "🤔" "😧" "🤷" "🤪" "😅" "😏" "😁" "😐" "🤘" "😍" "😭" "🙄" "👋" "👍" "🥰" "🙂" "😈" "😢" "😘" "😉" "😒" "😔")
+    echo ${array[$[$RANDOM % ${#array[@]}]]}
+}
+
+PS1="│\$(generate_emoji)\[\e[1;32m\]\u@\h:\[\e[0;0m\]\[\e[1;34m\]\w\[\e[0;0m\]"
+
+checkGit(){
+    git status &>/dev/null
+}
+
+gitStatus(){
+if checkGit; then
+    if [ $(git status --porcelain | wc -l) -eq "0" ]; then
+        echo -e "\e[3;32m"
+    else
+        echo -e "\e[3;31m"
+    fi
+fi
+}
+
+showGitIcon(){
+    if checkGit; then
+        echo " :"
+    fi
+}
+
+orange(){
+    tput setaf 3;
+}
+
+gitFiles(){
+	if checkGit && [ $(git status --short | wc -l) -gt "0" ]; then
+		echo -n ${1,,}":"
+		git status --short | grep $1 | wc -l
+	fi
+}
+
+PS1+=" $(orange)\$(showGitIcon)\[\e[0;0m\]\[\$(gitStatus)\]\$(parse_git_branch)\[\e[0;0m\]"
+PS1+=" \$(gitFiles ' A') \$(gitFiles '?') \$(gitFiles ' M') \$(gitFiles ' D')  \n└──=> "
+
+export PS1
+export PS2="└──=> "
