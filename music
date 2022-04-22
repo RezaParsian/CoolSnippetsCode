@@ -1,0 +1,10 @@
+#!/bin/bash
+
+inputLen=$((${#1}+1))
+
+for music in "$1"*.mp3; do
+    artistName=$(echo $music | sed 's/\..*//g' | sed 's/(.*)//g' | cut -d "-" -f1 | sed 's/ $//g' | sed 's/^ //g' | cut -c $inputLen-)
+    musicName=$(echo $music | sed 's/\..*//g' | sed 's/(.*)//g' | cut -d "-" -f2 | sed 's/ $//g' | sed 's/^ //g')
+    eyeD3 -a "$artistName" -A " " -b " " -t "$musicName" --remove-all-comments "$music"
+    sleep 1
+done
